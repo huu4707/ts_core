@@ -15,6 +15,7 @@ interface ServerConfig {
     SENDER_PASSWORD: string,
     HOST_SERVER: string,
     APP: string,
+    FLAG_SWAGGER ?: boolean
 }
 
 const developmentConfig: ServerConfig = {
@@ -25,15 +26,16 @@ const developmentConfig: ServerConfig = {
     JWT_TOKEN_SECRET_KEY: 'sau bao nhieu nam ta lai gap lai nhau',
     FB_APP_ID: '446047046333253',
     FB_APP_SECRET: '416d66e8afdb75521a2648a6e620cf8d',
-    FB_CALLBACK_URL: 'http://localhost:3000/public/account/auth/facebook/callback',
+    FB_CALLBACK_URL: 'http://localhost:3000/account/auth/facebook/callback',
     GG_CLIENT_ID: '217836984420-7jfn9i1iplg6delki8ffci00b7ajk8c3.apps.googleusercontent.com',
     GG_CLIENT_SECRET: 'UyytgWE8-2fpZozKbBtcuX-Z',
-    GG_CALLBACK_URL: 'http://localhost:3000/public/account/auth/google/callback',
+    GG_CALLBACK_URL: 'http://localhost:3000/account/auth/google/callback',
     LOG_DIR: '../log/',
     SENDER_EMAIL: 'dev.test.3forcom',
     SENDER_PASSWORD: '3forcom123',
     HOST_SERVER: 'http://localhost:3000',
-    APP: 'DAIKIN'
+    APP: 'DAIKIN',
+    FLAG_SWAGGER: true
 };
 
 const stagingConfig: ServerConfig = {
@@ -44,15 +46,16 @@ const stagingConfig: ServerConfig = {
     JWT_TOKEN_SECRET_KEY: 'sau bao nhieu nam ta lai gap lai nhau',
     FB_APP_ID: '446047046333253',
     FB_APP_SECRET: '416d66e8afdb75521a2648a6e620cf8d',
-    FB_CALLBACK_URL: 'http://localhost:3000/public/account/auth/facebook/callback',
+    FB_CALLBACK_URL: 'http://localhost:3000/account/auth/facebook/callback',
     GG_CLIENT_ID: '217836984420-7jfn9i1iplg6delki8ffci00b7ajk8c3.apps.googleusercontent.com',
     GG_CLIENT_SECRET: 'UyytgWE8-2fpZozKbBtcuX-Z',
-    GG_CALLBACK_URL: 'http://localhost:3000/public/account/auth/google/callback',
+    GG_CALLBACK_URL: 'http://localhost:3000/account/auth/google/callback',
     LOG_DIR: '../log/',
     SENDER_EMAIL: 'dev.test.3forcom',
     SENDER_PASSWORD: '3forcom123',
     HOST_SERVER: 'http://localhost:3000',
-    APP: 'DAIKIN'
+    APP: 'DAIKIN',
+    FLAG_SWAGGER: false
 }
 
 function getConfig(): ServerConfig {

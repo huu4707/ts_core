@@ -75,7 +75,7 @@ accountRouter.get('/auth/google/callback',
           res.redirect('/');
 });
 
-accountRouter.post('/forgot-password', (req, res:any) => {
+accountRouter.put('/forgot-password', (req, res:any) => {
     let email = req.body.email
     AccountService.forgotPassword(email)
     .then(data => {

@@ -1,4 +1,4 @@
-import { mustExist, makeSure } from '../utils/asserts';
+import { mustExist, makeSure,mustMatchReg } from '../utils/asserts';
 import { Customer } from '../database/sequelize';
 import { Op } from 'sequelize'
 import { hash, compare } from 'bcryptjs';
@@ -29,6 +29,7 @@ export class CustomerService {
         GENERATE_TOKEN_FAILED: "Generate token failed",
         TOKEN_MUST_BE_PROVIDED: 'Token must be provided',
         TOKEN_IS_EXIST: 'token is exist',
+        PASSWORD_INVALID: 'Password invalid'
     }
     public static async profile(id : string){
         mustExist(id, this.errors.CUSTOMER_MUST_BE_PROVIDED, 400);
@@ -53,13 +54,14 @@ export class CustomerService {
 
     public static async changeInfo(id: string,customerInput: CustomerInput ) {
         await this.validateChangeInfo(id, customerInput);
-        return await Customer.update(customerInput,{ where: { id: id } });
+        return await Customer.update(customerInput,{ plain: true, where: { id: id } });
     }
 
     public static async validateChangePassword(id: string, newPassword: string, retypePassword: string) {
         const customer = await Customer.findOne({where: {id }});
         makeSure(customer, this.errors.CUSTOMER_NOT_FOUND, 404);
         mustExist(newPassword, this.errors.PASSWORD_MUST_BE_PROVIDED);
+        mustMatchReg(newPassword, /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/, this.errors.PASSWORD_INVALID)
         mustExist(newPassword === retypePassword, 'Retype password is not valid');
     }
 

@@ -21,6 +21,8 @@ export async function mustBeCustomer(req: Request, res: any, next: NextFunction)
                 } else{
                    throw new ServerError('Token invalid', 400); 
                 }
+            } else{
+                throw new ServerError('Token invalid', 400); 
             }
         }
         catch (error) {

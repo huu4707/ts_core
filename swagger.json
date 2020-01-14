@@ -1,0 +1,398 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Daikin Application API",
+      "description": "Daikin Application API",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "host": "localhost:3000",
+    "tags": [
+      {
+        "name": "Account",
+        "description": "API for Account in the system"
+      },
+      {
+        "name": "Customer",
+        "description": "API for Customer in the system"
+      }
+    ],
+    "schemes": [
+      "http",
+      "https"
+    ],
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "in": "headers",
+            "name": "Authorization"
+        }
+    },
+    "paths": {
+      "/account/register": {
+        "post": {
+          "tags": [
+            "Account"
+          ],
+          "description": "Create new account in system",
+          "parameters": [
+            {
+              "name": "account",
+              "in": "body",
+              "description": "account that we want to create",
+              "schema": {
+                "$ref": "#/definitions/Account"
+              }
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "New account",
+              "schema": {
+                "$ref": "#/definitions/ResponseSuccessObject"
+              }
+            }
+          }
+        }
+      },
+      "/account/login": {
+        "post": {
+          "tags": [
+            "Account"
+          ],
+          "description": "Login",
+          "parameters": [
+            {
+              "name": "account",
+              "in": "body",
+              "description": "login",
+              "schema": {
+                "$ref": "#/definitions/login"
+              }
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "responses login",
+              "schema": {
+                "$ref": "#/definitions/ResponseSuccessObject"
+              }
+            }
+          }
+        }
+      },
+      "/account/auth/facebook": {
+        "get": {
+          "tags": [
+            "Account"
+          ],
+          "summary": "login by facebook: gọi vào route http://localhost:3000/account/auth/facebook chứ không test bằng swagger được"
+        }
+      },
+      "/account/auth/google": {
+        "get": {
+          "tags": [
+            "Account"
+          ],
+          "summary": "login by google: gọi vào route http://localhost:3000/account/auth/google chứ không test bằng swagger được"
+        }
+      },
+      "/account/forgot-password": {
+        "put": {
+            "tags": [
+              "Account"
+            ],
+            "description": "forgot password",
+            "parameters": [
+              {
+                "name": "account",
+                "in": "body",
+                "description": "parameter forgot password",
+                "schema": {
+                  "$ref": "#/definitions/forgotPassword"
+                }
+              }
+            ],
+            "produces": [
+              "application/json"
+            ],
+            "responses": {
+              "200": {
+                "description": "responses forgot password",
+                "schema": {
+                  "$ref": "#/definitions/ResponseSuccessObject"
+                }
+              }
+            }
+          }
+      },
+      "/account/forgot/change-password": {
+        "put": {
+            "tags": [
+              "Account"
+            ],
+            "description": "change-password",
+            "parameters": [
+              {
+                "name": "account",
+                "in": "body",
+                "description": "parameter change-password",
+                "schema": {
+                  "$ref": "#/definitions/changePassword"
+                }
+              }
+            ],
+            "produces": [
+              "application/json"
+            ],
+            "responses": {
+              "200": {
+                "description": "responses change Password",
+                "schema": {
+                  "$ref": "#/definitions/ResponseSuccessObject"
+                }
+              }
+            }
+          }
+      },
+      "/customer/profile": {
+        "get": {
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
+          "tags": [
+            "Customer"
+          ],
+          "summary": "get profile",
+          "responses": {
+            "200": {
+              "description": "get profile",
+              "schema": {
+                "$ref": "#/definitions/ResponseSuccessObject"
+              }
+            }
+          }
+        }
+      },
+      "/customer/change-info": {
+        "put": {
+          "tags": [
+            "Customer"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
+          "description": "update Customer in system",
+          "parameters": [
+            {
+              "name": "customer",
+              "in": "body",
+              "schema": {
+                "$ref": "#/definitions/Customer"
+              }
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "update customer",
+              "schema": {
+                "$ref": "#/definitions/ResponseSuccessObject"
+              }
+            }
+          }
+        }
+      },
+      "/customer/change-password": {
+        "put": {
+          "tags": [
+            "Customer"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
+          "description": "update password in system",
+          "parameters": [
+            {
+              "name": "customer",
+              "in": "body",
+              "schema": {
+                "$ref": "#/definitions/changePasswordCustomer"
+              }
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "update password",
+              "schema": {
+                "$ref": "#/definitions/ResponseSuccessObject"
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Account": {
+        "required": [
+          "email",
+          "name",
+          "sex",
+          "phone",
+          "dob",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "uniqueItems": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "sex": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "dob": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "ResponseSuccessObject": {
+        "properties": {
+            "status": {
+                "type": "boolean"
+              },
+              "result": {
+                "type": "object"
+              }
+          }
+      },
+      "ResponseSuccessArray": {
+        "properties": {
+            "status": {
+                "type": "boolean"
+              },
+              "result": {
+                "type": "array"
+              }
+          }
+      },
+      "login": {
+        "required": [
+            "email",
+            "password"
+          ],
+          "properties": {
+            "email": {
+              "type": "string",
+              "uniqueItems": true
+            },
+            "password": {
+              "type": "string"
+            }
+          }  
+      },
+      "forgotPassword": {
+        "required": [
+            "email"
+          ],
+          "properties": {
+            "email": {
+              "type": "string",
+              "uniqueItems": true
+            }
+          }  
+      },
+      "changePassword": {
+        "required": [
+            "token",
+            "newPassword",
+            "retypePassword"
+          ],
+          "properties": {
+            "token": {
+              "type": "string"
+            },
+            "newPassword": {
+                "type": "string"  
+            },
+            "retypePassword": {
+                "type": "string"
+            }
+          }  
+      },
+      "Customer": {
+        "required": [
+          "email",
+          "name",
+          "sex",
+          "phone",
+          "dob"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "uniqueItems": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "sex": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "dob": {
+            "type": "string"
+          }
+        }
+      },"changePasswordCustomer": {
+        "required": [
+            "newPassword",
+            "retypePassword"
+          ],
+          "properties": {
+            "newPassword": {
+                "type": "string"  
+            },
+            "retypePassword": {
+                "type": "string"
+            }
+          }  
+      }
+    }
+}

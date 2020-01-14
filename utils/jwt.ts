@@ -5,7 +5,7 @@ import { JWT_TOKEN_SECRET_KEY } from '../setting';
 export function verifyLogInToken(token: string): Promise<any> {
     return new Promise((resolve, reject) => {
         jwt.verify(token, JWT_TOKEN_SECRET_KEY, (err, obj: any) => {
-            if (err) return reject(new ServerError('INVALID_TOKEN', 400));
+            if (err) return reject(new ServerError('Invalid token', 400));
             delete obj.iat;
             delete obj.exp;
             resolve(obj);

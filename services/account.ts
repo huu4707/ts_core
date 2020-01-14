@@ -1,4 +1,4 @@
-import { mustExist, makeSure } from '../utils/asserts';
+import { mustExist, makeSure, mustMatchReg } from '../utils/asserts';
 import { Customer, ForgotPassword } from '../database/sequelize';
 import { hash, compare } from 'bcryptjs';
 import { createToken } from '../utils/jwt';
@@ -42,7 +42,8 @@ export class AccountService {
         EMAIL_NOT_FOUND: 'Email not found',
         GENERATE_TOKEN_FAILED: "Generate token failed",
         TOKEN_MUST_BE_PROVIDED: 'Token must be provided',
-        TOKEN_IS_EXIST: 'token is exist',
+        TOKEN_IS_EXIST: 'Token is exist',
+        PASSWORD_INVALID: 'Password invalid',
     }
     public static async validate(accountInput: AccountInput) {
         mustExist(accountInput.name, this.errors.NAME_MUST_BE_PROVIDED);
@@ -51,6 +52,7 @@ export class AccountService {
         mustExist(accountInput.phone, this.errors.PHONE_MUST_BE_PROVIDED);
         mustExist(accountInput.sex, this.errors.SEX_MUST_BE_PROVIDED);
         mustExist(accountInput.dob, this.errors.DOB_MUST_BE_PROVIDED);
+        mustMatchReg(accountInput.password, /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/, this.errors.PASSWORD_INVALID)
         const existEmail = await Customer.findOne({where: {email: accountInput.email} });
         mustExist(!existEmail, this.errors.EMAIL_IS_EXIST);
         const existPhone = await Customer.findOne({where: {phone: accountInput.phone }});
@@ -91,6 +93,7 @@ export class AccountService {
 
     public static async validateChangePassword(changePasswordInput: ChangePasswordInput) {
         mustExist(changePasswordInput.token, this.errors.TOKEN_MUST_BE_PROVIDED);
+        mustMatchReg(changePasswordInput.newPassword, /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/, this.errors.PASSWORD_INVALID)
         mustExist(changePasswordInput.newPassword, this.errors.NEW_PASSWORD_MUST_BE_PROVIDED);
         let check = changePasswordInput.newPassword === changePasswordInput.retypePassword;
         makeSure(check, this.errors.RETYPE_PASSWORD_INVALID);
@@ -104,7 +107,7 @@ export class AccountService {
             }]
         })
         makeSure(info, this.errors.TOKEN_IS_EXIST);
-        makeSure(!(moment(info.expired).valueOf() < moment().valueOf()), 'Generate password is expired! Please try click forgot password again');
+        makeSure((moment(info.expired).valueOf() > moment().valueOf()), 'Generate password is expired! Please try click forgot password again');
         let customer = info.customer;
         return await Customer.update({password: await hash(changePasswordInput.newPassword, 8)}, { where: { id: customer.id}});
     }
