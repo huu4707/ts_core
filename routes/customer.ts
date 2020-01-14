@@ -19,3 +19,21 @@ customerRouter.get('/profile', (req, res: any) => {
     }
 });
 
+customerRouter.put('/change-info', (req, res: any) => {
+    let id = req.query.idUser;
+    CustomerService.changeInfo(id, req.body)
+    .then(customer => {
+        res.send({ success: true, result: customer })
+    })
+    .catch(res.onError); 
+
+});
+
+customerRouter.put('/change-password',  (req, res: any) => {
+    let id = req.query.idUser;
+    CustomerService.changePassword(id, req.body)
+    .then(customer => {
+        res.send({ success: true, result: customer })
+    })
+    .catch(res.onError); 
+})

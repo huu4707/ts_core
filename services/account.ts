@@ -49,6 +49,8 @@ export class AccountService {
         mustExist(accountInput.email, this.errors.EMAIL_MUST_BE_PROVIDED);
         mustExist(accountInput.password, this.errors.PASSWORD_MUST_BE_PROVIDED);
         mustExist(accountInput.phone, this.errors.PHONE_MUST_BE_PROVIDED);
+        mustExist(accountInput.sex, this.errors.SEX_MUST_BE_PROVIDED);
+        mustExist(accountInput.dob, this.errors.DOB_MUST_BE_PROVIDED);
         const existEmail = await Customer.findOne({where: {email: accountInput.email} });
         mustExist(!existEmail, this.errors.EMAIL_IS_EXIST);
         const existPhone = await Customer.findOne({where: {phone: accountInput.phone }});
@@ -102,7 +104,7 @@ export class AccountService {
             }]
         })
         makeSure(info, this.errors.TOKEN_IS_EXIST);
-        makeSure(moment(info.expired).valueOf() < moment().valueOf(), 'Generate password is expired! Please try click forgot password again');
+        makeSure(!(moment(info.expired).valueOf() < moment().valueOf()), 'Generate password is expired! Please try click forgot password again');
         let customer = info.customer;
         return await Customer.update({password: await hash(changePasswordInput.newPassword, 8)}, { where: { id: customer.id}});
     }

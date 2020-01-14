@@ -84,7 +84,7 @@ accountRouter.post('/forgot-password', (req, res:any) => {
     .catch(res.onError);
 })
 
-accountRouter.post('/forgot/change-password', async function (req, res:any) {
+accountRouter.put('/forgot/change-password', async function (req, res:any) {
       AccountService.changePassword(req.body)
       .then(customer => {
         res.send({ success: true, result: customer })
