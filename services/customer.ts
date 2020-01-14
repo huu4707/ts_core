@@ -29,7 +29,8 @@ export class CustomerService {
         GENERATE_TOKEN_FAILED: "Generate token failed",
         TOKEN_MUST_BE_PROVIDED: 'Token must be provided',
         TOKEN_IS_EXIST: 'token is exist',
-        PASSWORD_INVALID: 'Password invalid'
+        PASSWORD_INVALID: 'Password invalid',
+        SEX_INVALID:"Gender invalid"
     }
     public static async profile(id : string){
         mustExist(id, this.errors.CUSTOMER_MUST_BE_PROVIDED, 400);
@@ -45,6 +46,8 @@ export class CustomerService {
         mustExist(customerInput.email, this.errors.EMAIL_MUST_BE_PROVIDED);
         mustExist(customerInput.phone, this.errors.PHONE_MUST_BE_PROVIDED);
         mustExist(customerInput.sex, this.errors.SEX_MUST_BE_PROVIDED);
+        let listSex = ["NAM", "NU"];
+        makeSure(listSex.includes(customerInput.sex), this.errors.SEX_INVALID);
         mustExist(customerInput.dob, this.errors.DOB_MUST_BE_PROVIDED);
         const existEmail = await Customer.findOne({where: {email: customerInput.email, id: { [Op.ne]: id } } });
         mustExist(!existEmail, this.errors.EMAIL_IS_EXIST);

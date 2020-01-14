@@ -44,6 +44,7 @@ export class AccountService {
         TOKEN_MUST_BE_PROVIDED: 'Token must be provided',
         TOKEN_IS_EXIST: 'Token is exist',
         PASSWORD_INVALID: 'Password invalid',
+        SEX_INVALID:"Gender invalid"
     }
     public static async validate(accountInput: AccountInput) {
         mustExist(accountInput.name, this.errors.NAME_MUST_BE_PROVIDED);
@@ -51,6 +52,8 @@ export class AccountService {
         mustExist(accountInput.password, this.errors.PASSWORD_MUST_BE_PROVIDED);
         mustExist(accountInput.phone, this.errors.PHONE_MUST_BE_PROVIDED);
         mustExist(accountInput.sex, this.errors.SEX_MUST_BE_PROVIDED);
+        let listSex = ["NAM", "NU"];
+        makeSure(listSex.includes(accountInput.sex), this.errors.SEX_INVALID);
         mustExist(accountInput.dob, this.errors.DOB_MUST_BE_PROVIDED);
         mustMatchReg(accountInput.password, /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/, this.errors.PASSWORD_INVALID)
         const existEmail = await Customer.findOne({where: {email: accountInput.email} });
